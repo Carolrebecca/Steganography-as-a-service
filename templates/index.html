@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><title>Steganography Web App</title></head>
+<body>
+  <h2>Encode a Message</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" required><br>
+    <input type="text" name="message" placeholder="Enter message" required><br>
+    <input type="hidden" name="action" value="encode">
+    <button type="submit">Encode</button>
+  </form>
+
+  <h2>Decode a Message</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" required><br>
+    <input type="hidden" name="action" value="decode">
+    <button type="submit">Decode</button>
+  </form>
+</body>
+</html>
