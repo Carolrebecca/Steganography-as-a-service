@@ -50,30 +50,6 @@
       background-color: #3700b3;
     }
 
-    /* Spinner */
-    #spinner-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(13,13,13,0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-
-    .spinner {
-      border: 8px solid #2d2d3d;
-      border-top: 8px solid #bb86fc;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
     /* Modal */
     #modal-overlay {
       position: fixed;
@@ -112,35 +88,28 @@
 <body data-status="{{ status|default('') }}">
 
   <h2>Encode a Message</h2>
- <iframe id="download-frame" name="download-frame" style="display:none;"></iframe>
+  <iframe id="download-frame" name="download-frame" style="display:none;"></iframe>
 
-
-<form id="encode-form" method="POST" enctype="multipart/form-data" target="download-frame" onsubmit="startSpinner()">
-  <input type="file" name="image" required>
-  <input type="text" name="message" placeholder="Enter message" required>
-  <input type="hidden" name="action" value="encode">
-  <button type="submit">Encode</button>
-</form>
-
+  <form id="encode-form" method="POST" enctype="multipart/form-data" target="download-frame">
+    <input type="file" name="image" required>
+    <input type="text" name="message" placeholder="Enter message" required>
+    <input type="hidden" name="action" value="encode">
+    <button type="submit">Encode</button>
+  </form>
 
   <h2>Decode a Message</h2>
   <form id="decode-form" method="POST" enctype="multipart/form-data">
     <input type="file" name="image" required>
     <input type="hidden" name="action" value="decode">
     <button type="submit">Decode</button>
+
     {% if message %}
-  <div class="modal" style="background-color:#1e1e2f;padding:15px;border-radius:10px;color:#bb86fc;margin-top:20px;">
-    <h3>Decoded Message:</h3>
-    <p>{{ message }}</p>
-  </div>
-{% endif %}
-
+    <div class="modal" style="background-color:#1e1e2f;padding:15px;border-radius:10px;color:#bb86fc;margin-top:20px;">
+      <h3>Decoded Message:</h3>
+      <p>{{ message }}</p>
+    </div>
+    {% endif %}
   </form>
-
-  <!-- Spinner Overlay -->
-  <div id="spinner-overlay">
-    <div class="spinner"></div>
-  </div>
 
   <!-- Modal Overlay -->
   <div id="modal-overlay">
@@ -152,32 +121,15 @@
   </div>
 
   <script>
-    const encodeForm = document.getElementById('encode-form');
-    const decodeForm = document.getElementById('decode-form');
-    const spinner = document.getElementById('spinner-overlay');
     const modalOverlay = document.getElementById('modal-overlay');
     const modalTitle = document.getElementById('modal-title');
     const modalMessage = document.getElementById('modal-message');
     const modalClose = document.getElementById('modal-close');
-    function startSpinner() {
-  spinner.style.display = 'flex';
-}
-
-// Hide spinner after file download
-document.getElementById('download-frame').addEventListener('load', function () {
-  spinner.style.display = 'none';
-});
-
-
-    // Show spinner on form submit
-    encodeForm.addEventListener('submit', () => spinner.style.display = 'flex');
-    decodeForm.addEventListener('submit', () => spinner.style.display = 'flex');
 
     modalClose.addEventListener('click', () => {
       modalOverlay.style.display = 'none';
     });
 
-    // Show modal based on Flask-passed status
     window.addEventListener('DOMContentLoaded', () => {
       const status = document.body.dataset.status;
       if (status === 'success') {
@@ -189,7 +141,6 @@ document.getElementById('download-frame').addEventListener('load', function () {
         modalMessage.textContent = 'Something went wrong. Please try again.';
         modalOverlay.style.display = 'flex';
       }
-      spinner.style.display = 'none';
     });
   </script>
 </body>
