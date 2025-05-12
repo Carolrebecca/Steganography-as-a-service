@@ -112,7 +112,8 @@
 <body data-status="{{ status|default('') }}">
 
   <h2>Encode a Message</h2>
-  <iframe id="download-frame" style="display:none;"></iframe>
+ <iframe id="download-frame" name="download-frame" style="display:none;"></iframe>
+
 
 <form id="encode-form" method="POST" enctype="multipart/form-data" target="download-frame" onsubmit="startSpinner()">
   <input type="file" name="image" required>
