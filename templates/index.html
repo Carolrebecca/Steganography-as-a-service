@@ -112,12 +112,15 @@
 <body data-status="{{ status|default('') }}">
 
   <h2>Encode a Message</h2>
-  <form id="encode-form" method="POST" enctype="multipart/form-data">
-    <input type="file" name="image" required>
-    <input type="text" name="message" placeholder="Enter message" required>
-    <input type="hidden" name="action" value="encode">
-    <button type="submit">Encode</button>
-  </form>
+  <iframe id="download-frame" style="display:none;"></iframe>
+
+<form id="encode-form" method="POST" enctype="multipart/form-data" target="download-frame" onsubmit="startSpinner()">
+  <input type="file" name="image" required>
+  <input type="text" name="message" placeholder="Enter message" required>
+  <input type="hidden" name="action" value="encode">
+  <button type="submit">Encode</button>
+</form>
+
 
   <h2>Decode a Message</h2>
   <form id="decode-form" method="POST" enctype="multipart/form-data">
@@ -155,6 +158,15 @@
     const modalTitle = document.getElementById('modal-title');
     const modalMessage = document.getElementById('modal-message');
     const modalClose = document.getElementById('modal-close');
+    function startSpinner() {
+  spinner.style.display = 'flex';
+}
+
+// Hide spinner after file download
+document.getElementById('download-frame').addEventListener('load', function () {
+  spinner.style.display = 'none';
+});
+
 
     // Show spinner on form submit
     encodeForm.addEventListener('submit', () => spinner.style.display = 'flex');
